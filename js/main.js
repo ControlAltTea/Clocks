@@ -1,6 +1,6 @@
 console.log("connected to javascript");
 
-
+// 
 let timezonesObj = {
   JST: {
     regionName: "Japan",
@@ -113,12 +113,14 @@ class Clock {
     // console.log(`timezone seconds`, this.seconds);
     this.minutes = this.date.getUTCMinutes();
     // console.log(`timezone minutes`, this.minutes);
-    this.hours = Math.abs(this.date.getUTCHours() + this._UTCOffset);
+    this.hours = Math.abs(this.date.getUTCHours() + this.UTCOffset);
     // console.log(`timezone hours`, this.hours);
 
     if (this.hours > 23) {
       this.hours = 0;
     }
+
+    console.log(this.hours)
 
     // DIGITAL FORMAT
     this.digitalFormat = `${this.hours}:${this.minutes}:${this.seconds}`;
@@ -162,21 +164,29 @@ class Clock {
 }
 
 function setDate() {
-  Object.keys(timezonesObj).forEach(timezone => {
+  // CREATING THE CLOCK
+  const BODY = document.querySelector('body');
+  let timeZoneArr = Object.keys(timezonesObj);
+  console.log(`timeZoneArr`, timeZoneArr);
+
+  for (let i = 0; i < timeZoneArr.length; i++){
+    if (i === timeZoneArr.length - 1) {
+      BODY.innerHTML = " ";
+    }
+  }
+
+  timeZoneArr.forEach(timezone => {
     const TIMEZONE_REGION_NAME = timezonesObj[timezone].regionName;
     const TIMEZONE_ABBR = timezonesObj[timezone].abbr;
-   
-    // CREATING THE CLOCK
-    const BODY = document.querySelector('body');
+  
     const CLOCK_SPACE = document.createElement("div");
-    // const clocks = document.querySelectorAll(".clockSpace");
     CLOCK_SPACE.classList.add("clockSpace");
     BODY.appendChild(CLOCK_SPACE);
   
     let title = document.createElement("h1");
     title.innerText = `${TIMEZONE_REGION_NAME} Daylight Time`;
     CLOCK_SPACE.appendChild(title);
-    
+
     const CLOCK_CLASS = document.createElement("div");
     CLOCK_SPACE.appendChild(CLOCK_CLASS);
     CLOCK_CLASS.classList.add("clock");
@@ -190,25 +200,34 @@ function setDate() {
     secondsHand.classList.add("hand");
     secondsHand.classList.add("second-hand");
     CLOCK_FACE.appendChild(secondsHand);
-    console.log(`secondsHand`,secondsHand);
+
+    const minutesHand = document.createElement("div");
+    minutesHand.setAttribute('data-timezone', `${TIMEZONE_ABBR}`)
+    minutesHand.classList.add("hand");
+    minutesHand.classList.add("min-hand");
+    CLOCK_FACE.appendChild(minutesHand);
 
     const hoursHand = document.createElement("div");
     hoursHand.setAttribute('data-timezone', `${TIMEZONE_ABBR}`)
     CLOCK_FACE.appendChild(hoursHand);
     hoursHand.classList.add("hand");
     hoursHand.classList.add("hour-hand");
-    console.log(`hoursHand`,hoursHand);
 
-      const TIMEZONE_OFFSET = timezonesObj[timezone].offset;
-      const NEW_CLOCK = new Clock(TIMEZONE_ABBR, TIMEZONE_OFFSET);
-      NEW_CLOCK.setStyle();
-      const DIGITAL_FORMAT = NEW_CLOCK.digitalFormat;
+    const DIGITAL_CLASS = document.createElement("div");
+    DIGITAL_CLASS.classList.add("digitalFormat");
+    DIGITAL_CLASS.setAttribute('data-timezone', `${TIMEZONE_ABBR}`)
+    CLOCK_SPACE.appendChild(DIGITAL_CLASS);
 
-      document.querySelector(`.digitalFormat[data-${TIMEZONE_ABBR}]`).innerText = DIGITAL_FORMAT;
-    })
+    const TIMEZONE_OFFSET = timezonesObj[timezone].offset;
+    const NEW_CLOCK = new Clock(TIMEZONE_ABBR, TIMEZONE_OFFSET);
+    NEW_CLOCK.setStyle();
+    const DIGITAL_FORMAT = NEW_CLOCK.digitalFormat;
+
+    // document.querySelector(`'.digitalFormat[${DIGITAL_CLASS.dataset}]'`).innerText = DIGITAL_FORMAT;
+  })
   // })
 }
 
 
-setDate();
-// setInterval(setDate, 1000);
+// setDate();
+setInterval(setDate, 1000);
