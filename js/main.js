@@ -1,38 +1,42 @@
 console.log("connected to javascript");
 
-const clocks = document.querySelectorAll(".clock");
-console.log(clocks)
-
 
 let timezonesObj = {
   JST: {
+    regionName: "Japan",
     abbr: "JST",
     offset: 9
   },
   HST: {
+    regionName: "Hawaiian-Aleutian",
     abbr: "HST",
     offset: -10
   },
-  // AKDT: {
-  //   abbr: "AKDT",
-  //   offset: -8
-  // },
-  // PST: {
-  //   abbr: "PST",
-  //   offset: -7
-  // },
-  // MDT: {
-  //   abbr: "MDT",
-  //   offset: -6
-  // },
-  // EST: {
-  //   abbr: "EST",
-  //   offset: -5
-  // },
-  // UTC: {
-  //   abbr: "UTC",
-  //   offset: 0
-  // }
+  AKDT: {
+    regionName: "Alaska",
+    abbr: "AKDT",
+    offset: -8
+  },
+  PST: {
+    regionName: "Pacific",
+    abbr: "PST",
+    offset: -7
+  },
+  MDT: {
+    regionName: "Mountain",
+    abbr: "MDT",
+    offset: -6
+  },
+  EST: {
+    regionName: "Eastern",
+    abbr: "EST",
+    offset: -5
+  },
+  UTC: {
+    regionName: "Universal",
+    abbr: "UTC",
+    offset: 0
+  }
 }
 
 // // function constructor
@@ -96,8 +100,9 @@ let timezonesObj = {
 
 class Clock {
   constructor(timezoneAbbrv, UTCOffset) {
-    this._timezoneAbbrv = timezoneAbbrv;
-    this._UTCOffset = UTCOffset;
+    this.timezoneAbbrv = timezoneAbbrv;
+    console.log(`timezoneAbbrv`, this.timezoneAbbrv);
+    this.UTCOffset = UTCOffset;
 
     console.log(`UTCOffset`, UTCOffset);
 
@@ -119,9 +124,9 @@ class Clock {
     this.digitalFormat = `${this.hours}:${this.minutes}:${this.seconds}`;
 
     // STYLING HANDS
-    this.secondHand = document.querySelector(`.second-hand[data-timezone="${this._timezoneAbbrv}"]`);
-    this.minuteHand = document.querySelector(`.min-hand[data-timezone="${this._timezoneAbbrv}"]`);
-    this.hourHand = document.querySelector(`.hour-hand[data-timezone="${this._timezoneAbbrv}"]`);
+    this.secondHand = document.querySelector(`.second-hand[data-timezone="${this.timezoneAbbrv}"]`);
+    this.minuteHand = document.querySelector(`.min-hand[data-timezone="${this.timezoneAbbrv}"]`);
+    this.hourHand = document.querySelector(`.hour-hand[data-timezone="${this.timezoneAbbrv}"]`);
   }
 
     getSecondsDegrees() {
@@ -157,25 +162,53 @@ class Clock {
 }
 
 function setDate() {
-  clocks.forEach((clock) => {
-    Object.keys(timezonesObj).forEach(timezone => {
-      const TIMEZONE_ABBR = timezonesObj[timezone].abbr;
-      const TIMEZONE_OFFSET = timezonesObj[timezone].offset;
+  Object.keys(timezonesObj).forEach(timezone => {
+    const TIMEZONE_REGION_NAME = timezonesObj[timezone].regionName;
+    const TIMEZONE_ABBR = timezonesObj[timezone].abbr;
+   
+    // CREATING THE CLOCK
+    const BODY = document.querySelector('body');
+    const CLOCK_SPACE = document.createElement("div");
+    // const clocks = document.querySelectorAll(".clockSpace");
+    CLOCK_SPACE.classList.add("clockSpace");
+    BODY.appendChild(CLOCK_SPACE);
+  
+    let title = document.createElement("h1");
+    title.innerText = `${TIMEZONE_REGION_NAME} Daylight Time`;
+    CLOCK_SPACE.appendChild(title);
+    
+    const CLOCK_CLASS = document.createElement("div");
+    CLOCK_SPACE.appendChild(CLOCK_CLASS);
+    CLOCK_CLASS.classList.add("clock");
 
-      // console.log(`obj`, timezone);
+    const CLOCK_FACE = document.createElement("div");
+    CLOCK_FACE.classList.add("clock-face")
+    CLOCK_CLASS.appendChild(CLOCK_FACE);
+
+    const secondsHand = document.createElement("div");
+    secondsHand.setAttribute('data-timezone', `${TIMEZONE_ABBR}`)
+    secondsHand.classList.add("hand");
+    secondsHand.classList.add("second-hand");
+    CLOCK_FACE.appendChild(secondsHand);
+    console.log(`secondsHand`,secondsHand);
+
+    const hoursHand = document.createElement("div");
+    hoursHand.setAttribute('data-timezone', `${TIMEZONE_ABBR}`)
+    CLOCK_FACE.appendChild(hoursHand);
+    hoursHand.classList.add("hand");
+    hoursHand.classList.add("hour-hand");
+    console.log(`hoursHand`,hoursHand);
+
+      const TIMEZONE_OFFSET = timezonesObj[timezone].offset;
       const NEW_CLOCK = new Clock(TIMEZONE_ABBR, TIMEZONE_OFFSET);
-      console.log(NEW_CLOCK);
       NEW_CLOCK.setStyle();
       const DIGITAL_FORMAT = NEW_CLOCK.digitalFormat;
 
-      // console.log(`newClock.digitalFormat`, DIGITAL_FORMAT);
-      // console.log(`newClock`, NEW_CLOCK);
-
       document.querySelector(`.digitalFormat[data-${TIMEZONE_ABBR}]`).innerText = DIGITAL_FORMAT;
     })
-  })
+  // })
 }
 
 
-// setDate();
-setInterval(setDate, 1000);
+setDate();
+// setInterval(setDate, 1000);
