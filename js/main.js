@@ -6,7 +6,7 @@ const BODY = document.querySelector('body');
 // This timezone object will allow for adding additional clocks with just a few pieces of information
 // these pieces are fed to the Clock class and they procedurally generate each clock's stylng and the appropriate time
 let timezonesObj = [
-    JST = {
+  JST = {
     regionName: "Japan",
     abbr: "JST",
     offset: 9
