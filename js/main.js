@@ -46,10 +46,7 @@ let timezonesObj = [
 class Clock {
   constructor(timezoneAbbrv, UTCOffset) {
     this.timezoneAbbrv = timezoneAbbrv;
-    console.log(`timezoneAbbrv`, this.timezoneAbbrv);
     this.UTCOffset = UTCOffset;
-
-    console.log(`UTCOffset`, UTCOffset);
 
     // TIME VALUES
     this.date = new Date();
@@ -63,14 +60,20 @@ class Clock {
     // Math.abs ensures no number is returned negative
     this.hours = Math.abs(this.date.getUTCHours() + this.UTCOffset);
     // console.log(`timezone hours`, this.hours);
-
-    // Universal time does not use the 24th hour, it replaces it with 0
-    if (this.hours > 23) {
-      this.hours = 0;
+    
+    // // DIGITAL FORMAT
+    if (this.hours > 24) {
+      this.hours -= 24;
+      this.digitalFormat = `${this.hours} ${this.minutes} ${this.seconds} AM`;
     }
-
-    // DIGITAL FORMAT
-    this.digitalFormat = `${this.hours}:${this.minutes}:${this.seconds}`;
+    else {
+      this.digitalFormat = `${this.hours} ${this.minutes} ${this.seconds} PM`;
+    }
+    
+    if (this.hours >= 12) {
+      this.hours -= 12;
+      this.digitalFormat = `${Math.abs(this.hours)} ${this.minutes} ${this.seconds} PM`;
+    }
 
     this.body = BODY;
 
@@ -131,7 +134,6 @@ class Clock {
     this.CLOCK_SPACE.appendChild(this.CLOCK_CLASS);
     this.CLOCK_SPACE.appendChild(this.DIGITAL_CLASS);
 
-
     this.CLOCK_CLASS.appendChild(this.CLOCK_FACE);
 
     this.CLOCK_FACE.appendChild(this.secondsElement);
@@ -149,7 +151,7 @@ class Clock {
   };
 
   getHoursDegrees() {
-    return (this.hours / 12) * 360 + 90;
+    return (this.hours / 24) * 360 + 90;
   };
 
     // this method was created to allow for conditions
@@ -170,6 +172,9 @@ class Clock {
         this.hoursElement.style.transition = "none";
       }
       this.hoursElement.style.transform = `rotate(${this.getHoursDegrees()}deg)`;
+    
+      this.DIGITAL_CLASS.innerText = this.digitalFormat;
+
     };
 }
 
@@ -188,9 +193,7 @@ function setDate() {
 
   // Here, we create each clock by looping through the keys in timezoneObj
   timezonesObj.forEach(timezone => {
-    console.log(`timezone`, timezone);
     const TIMEZONE_REGION_NAME = timezone.regionName;
-    console.log(`TIMEZONE_REGION_NAME`,TIMEZONE_REGION_NAME )
     const TIMEZONE_ABBR = timezone.abbr;
     // creates and styles each new clock
     const TIMEZONE_OFFSET = timezone.offset;
@@ -199,19 +202,11 @@ function setDate() {
     // Depending on the timezone the title changes
     NEW_CLOCK.title.innerText = `${TIMEZONE_REGION_NAME} Daylight Time`;
 
-    // adding a data attribute so that each hand's animations relies on the adata attribute
-    // rather than the styling selectors
-    // NEW_CLOCK.secondsHand.setAttribute('data-timezone', `${TIMEZONE_ABBR}`)
-    console.log(`NEW_CLOCK.secondsHand`, NEW_CLOCK.secondsElement);
-
     NEW_CLOCK.addClasses();
     NEW_CLOCK.appendElements();
     NEW_CLOCK.setStyle();
-    const DIGITAL_FORMAT = NEW_CLOCK.digitalFormat;
-    // document.querySelector(`'.digitalFormat[${DIGITAL_CLASS.dataset}]'`).innerText = DIGITAL_FORMAT;
   })
 }
-
 
 // setDate();
 setInterval(setDate, 1000);
