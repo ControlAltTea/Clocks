@@ -1,5 +1,7 @@
 # Clocks
 
+[clocks.gif](https://github.com/ControlAltTea/Clocks/blob/main/images/clocks.gif?raw=true)
+
 Using OOP, this web app allows you to compare multiple timezones, using OOP. Each clock is in 12-hour tim, staring with Japan.
 
 ## Tech Used : ![HTML](https://img.shields.io/badge/-HTML-orange?style=for-the-badge&logo=appveyor)![CSS](https://img.shields.io/badge/-CSS-green?style=for-the-badge&logo=appveyor)![Javascript](https://img.shields.io/badge/-Javascript-blue?style=for-the-badge&logo=appveyor)
