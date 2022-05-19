@@ -1,3 +1,19 @@
 # Clocks
- 
-Using OOP, I took JS30's base day 2 files, in which we created an analogue clock, complete with rotating clock hand animations. I then converted that aanlogue clock to a digital format (24-hour time), and created muiltiple clock objects. The next goal is to update those same objects to a single class and automate the "clockType" to cycle though pre-determined values (UTC, JST, EST, etc.) instead of hard coding using if statements.
+
+Using OOP, this web app allows you to compare multiple timezones, using OOP. Each clock is in 12-hour tim, staring with Japan.
+
+## Tech Used : ![HTML](https://img.shields.io/badge/-HTML-orange?style=for-the-badge&logo=appveyor)![CSS](https://img.shields.io/badge/-CSS-green?style=for-the-badge&logo=appveyor)![Javascript](https://img.shields.io/badge/-Javascript-blue?style=for-the-badge&logo=appveyor)
+
+Using Unity to create the outline shader and mouse detection, we then created every 3D object using Blender to model and Substance Painter to create textures and materials.
+
+## How It's Made
+
+using HTML, CSS, and JavaScript, each clock is an object with 3 properties: region name, timezone, and UTC-offset.
+
+## Optimizations
+
+Originally his was an execires in CSS animations. It then was recreated in iterations using if/else statements, constructor functions and eventually a single class.
+
+## Lessons Learned
+
+Mostly how to use classes versus constuctor objects.
