@@ -1,47 +1,48 @@
 console.log("connected to javascript");
+const http = require("http");
 
 // A variable is created for body so that each following element can be appended to it
-const BODY = document.querySelector('body');
+const BODY = document.querySelector("body");
 
 // This timezone object will allow for adding additional clocks with just a few pieces of information
 // these pieces are fed to the Clock class and they procedurally generate each clock's stylng and the appropriate time
 let timezonesObj = [
-  JST = {
+  (JST = {
     regionName: "Japan",
     abbr: "JST",
-    offset: 9
-  },
-  HST = {
+    offset: 9,
+  }),
+  (HST = {
     regionName: "Hawaiian-Aleutian",
     abbr: "HST",
-    offset: -10
-  },
-  AKDT = {
+    offset: -10,
+  }),
+  (AKDT = {
     regionName: "Alaska",
     abbr: "AKDT",
-    offset: -8
-  },
-  PST = {
+    offset: -8,
+  }),
+  (PST = {
     regionName: "Pacific",
     abbr: "PST",
-    offset: -7
-  },
-  MDT = {
+    offset: -7,
+  }),
+  (MDT = {
     regionName: "Mountain",
     abbr: "MDT",
-    offset: -6
-  },
-  EST = {
+    offset: -6,
+  }),
+  (EST = {
     regionName: "Eastern",
     abbr: "EST",
-    offset: -5
-  },
-  UTC = {
+    offset: -5,
+  }),
+  (UTC = {
     regionName: "Universal",
     abbr: "UTC",
-    offset: 0
-  }
-]
+    offset: 0,
+  }),
+];
 
 class Clock {
   constructor(timezoneAbbrv, UTCOffset) {
@@ -60,19 +61,20 @@ class Clock {
     // Math.abs ensures no number is returned negative
     this.hours = Math.abs(this.date.getUTCHours() + this.UTCOffset);
     // console.log(`timezone hours`, this.hours);
-    
+
     // // DIGITAL FORMAT
     if (this.hours > 24) {
       this.hours -= 24;
       this.digitalFormat = `${this.hours} ${this.minutes} ${this.seconds} AM`;
-    }
-    else {
+    } else {
       this.digitalFormat = `${this.hours} ${this.minutes} ${this.seconds} PM`;
     }
-    
+
     if (this.hours >= 12) {
       this.hours -= 12;
-      this.digitalFormat = `${Math.abs(this.hours)} ${this.minutes} ${this.seconds} PM`;
+      this.digitalFormat = `${Math.abs(this.hours)} ${this.minutes} ${
+        this.seconds
+      } PM`;
     }
 
     this.body = BODY;
@@ -112,15 +114,15 @@ class Clock {
 
     this.secondsElement.classList.add("hand");
     this.secondsElement.classList.add("second-hand");
-    this.secondsElement.setAttribute('data-timezone', `${this.timezoneAbbrv}`);
+    this.secondsElement.setAttribute("data-timezone", `${this.timezoneAbbrv}`);
 
     this.minutesElement.classList.add("hand");
     this.minutesElement.classList.add("min-hand");
-    this.minutesElement.setAttribute('data-timezone', `${this.timezoneAbbrv}`);
+    this.minutesElement.setAttribute("data-timezone", `${this.timezoneAbbrv}`);
 
     this.hoursElement.classList.add("hand");
     this.hoursElement.classList.add("hour-hand");
-    this.hoursElement.setAttribute('data-timezone', `${this.timezoneAbbrv}`);
+    this.hoursElement.setAttribute("data-timezone", `${this.timezoneAbbrv}`);
 
     this.DIGITAL_CLASS.classList.add("digitalFormat");
   }
@@ -144,38 +146,37 @@ class Clock {
   // these methods determine the rate each hand should spin
   getSecondsDegrees() {
     return (this.seconds / 60) * 360 + 90;
-  };
+  }
 
   getMinutesDegrees() {
     return (this.minutes / 60) * 360 + 90;
-  };
+  }
 
   getHoursDegrees() {
     return (this.hours / 24) * 360 + 90;
-  };
+  }
 
-    // this method was created to allow for conditions
+  // this method was created to allow for conditions
   setStyle() {
-      // if the seconds exceed their limit, this ensures the animation does not loop back to the beginning
-      // simply smoothens the animation
-      if (this.getSecondsDegrees() > 60) {
-        this.secondsElement.style.transition = "none";
-      }
-      this.secondsElement.style.transform = `rotate(${this.getSecondsDegrees()}deg)`;
+    // if the seconds exceed their limit, this ensures the animation does not loop back to the beginning
+    // simply smoothens the animation
+    if (this.getSecondsDegrees() > 60) {
+      this.secondsElement.style.transition = "none";
+    }
+    this.secondsElement.style.transform = `rotate(${this.getSecondsDegrees()}deg)`;
 
-      if (this.getMinutesDegrees() > 60) {
-        this.minutesElement.style.transition = "none";
-      }
-      this.minutesElement.style.transform = `rotate(${this.getMinutesDegrees()}deg)`;
+    if (this.getMinutesDegrees() > 60) {
+      this.minutesElement.style.transition = "none";
+    }
+    this.minutesElement.style.transform = `rotate(${this.getMinutesDegrees()}deg)`;
 
-      if (this.getHoursDegrees() > 12) {
-        this.hoursElement.style.transition = "none";
-      }
-      this.hoursElement.style.transform = `rotate(${this.getHoursDegrees()}deg)`;
-    
-      this.DIGITAL_CLASS.innerText = this.digitalFormat;
+    if (this.getHoursDegrees() > 12) {
+      this.hoursElement.style.transition = "none";
+    }
+    this.hoursElement.style.transform = `rotate(${this.getHoursDegrees()}deg)`;
 
-    };
+    this.DIGITAL_CLASS.innerText = this.digitalFormat;
+  }
 }
 
 function setDate() {
@@ -184,7 +185,7 @@ function setDate() {
   // console.log(`timeZoneArr`, timeZoneArr);
 
   // Here, we use that length to reset the HTML in the body
-  for (let i = 0; i < timezonesObj.length; i++){
+  for (let i = 0; i < timezonesObj.length; i++) {
     if (i === timezonesObj.length - 1) {
       BODY.innerHTML = " ";
     }
@@ -192,7 +193,7 @@ function setDate() {
   // if not the code below will continuously add new elements to the DOM each time we loop through the timezoneObj
 
   // Here, we create each clock by looping through the keys in timezoneObj
-  timezonesObj.forEach(timezone => {
+  timezonesObj.forEach((timezone) => {
     const TIMEZONE_REGION_NAME = timezone.regionName;
     const TIMEZONE_ABBR = timezone.abbr;
     // creates and styles each new clock
@@ -205,9 +206,8 @@ function setDate() {
     NEW_CLOCK.addClasses();
     NEW_CLOCK.appendElements();
     NEW_CLOCK.setStyle();
-  })
+  });
 }
 
-// setDate();
-setInterval(setDate, 1000);
-
+setDate();
+// setInterval(setDate, 1000);
