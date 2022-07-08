@@ -48,6 +48,7 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/timezones", (request, response) => {
+  response.render("index.ejs", {});
   response.json(timezonesObj);
 });
 
@@ -64,6 +65,8 @@ app.get("/api/timezones/:id", (request, response) => {
     response.status(404).end();
   }
 });
+
+app.set("view engine", "ejs");
 
 app.post("/api/notes", (request, response) => {
   const note = request.body;

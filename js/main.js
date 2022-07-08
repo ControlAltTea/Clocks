@@ -1,5 +1,5 @@
 console.log("connected to javascript");
-const http = require("http");
+// const http = require("http");
 
 // A variable is created for body so that each following element can be appended to it
 const BODY = document.querySelector("body");
@@ -65,9 +65,9 @@ class Clock {
     // // DIGITAL FORMAT
     if (this.hours > 24) {
       this.hours -= 24;
-      this.digitalFormat = `${this.hours} ${this.minutes} ${this.seconds} AM`;
+      this.digitalFormat = `${this.hours}:${this.minutes}:${this.seconds} AM`;
     } else {
-      this.digitalFormat = `${this.hours} ${this.minutes} ${this.seconds} PM`;
+      this.digitalFormat = `${this.hours}:${this.minutes}:${this.seconds} PM`;
     }
 
     if (this.hours >= 12) {
@@ -209,5 +209,5 @@ function setDate() {
   });
 }
 
-setDate();
-// setInterval(setDate, 1000);
+// setDate();
+setInterval(setDate, 1000);
