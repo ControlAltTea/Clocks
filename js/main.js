@@ -2,6 +2,10 @@ import {timezonesObj} from "./timezones.js";
 
 console.log(timezonesObj);
 
+const timezonesArr = Object.values(timezonesObj);
+
+console.log(timezonesArr)
+
 // const timezoneObj = require("timezones");
 
 
@@ -11,7 +15,6 @@ console.log("connected to javascript");
 
 // A variable is created for body so that each following element can be appended to it
 const BODY = document.querySelector("body");
-
 
 class Clock {
   constructor(timezoneAbbrv, UTCOffset) {
@@ -154,20 +157,19 @@ function setDate() {
   // console.log(`timeZoneArr`, timeZoneArr);
 
   // Here, we use that length to reset the HTML in the body
-  for (let i = 0; i < timezonesObj.length; i++) {
-    if (i === timezonesObj.length - 1) {
+  for (let i = 0; i < timezonesArr.length; i++) {
+    if (i === timezonesArr.length - 1) {
       BODY.innerHTML = " ";
     }
   }
   // if not the code below will continuously add new elements to the DOM each time we loop through the timezoneObj
 
   // Here, we create each clock by looping through the keys in timezoneObj
-  Object.keys(timezonesObj).forEach((timezone) => {
-    const timeZone01 = timezonesObj[timezone];
-    const TIMEZONE_REGION_NAME = timeZone01.regionName;
-    const TIMEZONE_ABBR = timeZone01.abbr;
+ timezonesArr.forEach((timezone) => {
+   const TIMEZONE_REGION_NAME = timezone.regionName;
+   const TIMEZONE_ABBR = timezone.abbr;
     // creates and styles each new clock
-    const TIMEZONE_OFFSET = timeZone01.offset;
+   const TIMEZONE_OFFSET = timezone.offset;
 
     const NEW_CLOCK = new Clock(TIMEZONE_ABBR, TIMEZONE_OFFSET);
     // Depending on the timezone the title changes
