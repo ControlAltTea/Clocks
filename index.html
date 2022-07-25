@@ -5,11 +5,16 @@
     <title>Tea Tells Time</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/normalize.css" />
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   </head>
   <body>
-    <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/timezones.js"></script>
-    <!-- <script src="server.js"></script> -->
+    <div id="root"></div>
+
+    <script type="module" src="/js/react-test.js"></script>
+    <script type="module" src="/js/timezones.js"></script>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   </body>
 </html>
 
