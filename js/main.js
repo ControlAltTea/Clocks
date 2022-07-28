@@ -1,17 +1,48 @@
-import {timezonesObj} from "./timezones.js";
-
-console.log(timezonesObj);
-
-// const timezoneObj = require("timezones");
-
-
 console.log("connected to javascript");
 // const http = require("http");
-
 
 // A variable is created for body so that each following element can be appended to it
 const BODY = document.querySelector("body");
 
+// This timezone object will allow for adding additional clocks with just a few pieces of information
+// these pieces are fed to the Clock class and they procedurally generate each clock's stylng and the appropriate time
+let timezonesObj = [
+  (JST = {
+    regionName: "Japan",
+    abbr: "JST",
+    offset: 9,
+  }),
+  (HST = {
+    regionName: "Hawaiian-Aleutian",
+    abbr: "HST",
+    offset: -10,
+  }),
+  (AKDT = {
+    regionName: "Alaska",
+    abbr: "AKDT",
+    offset: -8,
+  }),
+  (PST = {
+    regionName: "Pacific",
+    abbr: "PST",
+    offset: -7,
+  }),
+  (MDT = {
+    regionName: "Mountain",
+    abbr: "MDT",
+    offset: -6,
+  }),
+  (EST = {
+    regionName: "Eastern",
+    abbr: "EST",
+    offset: -5,
+  }),
+  (UTC = {
+    regionName: "Universal",
+    abbr: "UTC",
+    offset: 0,
+  }),
+];
 
 class Clock {
   constructor(timezoneAbbrv, UTCOffset) {
@@ -162,12 +193,11 @@ function setDate() {
   // if not the code below will continuously add new elements to the DOM each time we loop through the timezoneObj
 
   // Here, we create each clock by looping through the keys in timezoneObj
-  Object.keys(timezonesObj).forEach((timezone) => {
-    const timeZone01 = timezonesObj[timezone];
-    const TIMEZONE_REGION_NAME = timeZone01.regionName;
-    const TIMEZONE_ABBR = timeZone01.abbr;
+  timezonesObj.forEach((timezone) => {
+    const TIMEZONE_REGION_NAME = timezone.regionName;
+    const TIMEZONE_ABBR = timezone.abbr;
     // creates and styles each new clock
-    const TIMEZONE_OFFSET = timeZone01.offset;
+    const TIMEZONE_OFFSET = timezone.offset;
 
     const NEW_CLOCK = new Clock(TIMEZONE_ABBR, TIMEZONE_OFFSET);
     // Depending on the timezone the title changes
