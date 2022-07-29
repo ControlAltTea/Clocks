@@ -143,6 +143,8 @@ class Clock {
     this.CLOCK_FACE.appendChild(this.hoursElement);
   }
 
+
+
   // these methods determine the rate each hand should spin
   getSecondsDegrees() {
     return (this.seconds / 60) * 360 + 90;
